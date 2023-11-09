@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model patient {
+  id            Int     @id @default(autoincrement())
+  title         String
+  first_name    String
+  last_name     String
+  name_addition String
+  sex           String
+  birthdate     DateTime
+}
+
+model biological {
+  id                          Int      @id @default(autoincrement())
+  patientId                   Int
+  height                      Float
+  weight                      Float
+  mask                        String
+  race                        String
+  body_fat                    Float
+  hip_waist_ratio             Float
+  bmi                         Int
+  estimated_fitness_level     Float
+  bsa                         Float
+  hct                         Int
+  hb                          Int
+  changes_heart_rate          Float
+  medication                  String
+  existing_medical_conditions String
+  patient                     patient  @relation(fields: [patientId], references: [id])
+}
+
+
+
+
+model normal_values {
+  id_normal_values            Int @id @default(autoincrement())
+  patient_id                  Int 
+  max_oxi_uptake              String
+  max_relative_oxi_uptake     String
+  max_oxy_pulse               String
+  max_heart_rate              String
+  max_minute_ventilation      String
+  max_breathing_frequency     String
+  max_work_rate               String
+  max_arterial_blood_pressure String
+  spirometry_normal_value_set String
+  lbw                         Float
+  ic                          Float
+  vc                          Float
+  fev1                        Float
+  patient                     patient @relation(fields: [patient_id], references: [id])
+}
+
+model teste_data {
+  id_test_data        Int @id @default(autoincrement())
+  patient_id          Int
+  start_time          DateTime
+  duration            DateTime
+  cpet_device         String
+  serial_number       Int
+  firmware_version    String
+  flow_sensor         String
+  temperature         Float
+  barometric_pressure Float
+  humidity            Float
+  patient             patient @relation(fields: [patient_id], references: [id])
+}
+
+model teste{
+  id_teste                Int @id @default(autoincrement())
+  teste_data_id           Int
+  variable                String
+  unit                    String
+  rest                    String
+  unloaded_pedalling      Float
+  warm_up                 DateTime
+  vt1                     Float
+  vt1_perc_norm           Int
+  vt1_perc_max            Int
+  vt2                     Float
+  vt2_per_norm            Int
+  vt2_perc_max            Int
+  vo2peak                 Float
+  vo2peak_perc_norm       Int
+  normal                  Float
+  absolute_maximum_values Float
+  teste_data              teste_data @relation(fields: [teste_data_id], references: [id_test_data])
+}
+
+model measurement{
+    id_measurement Int @id @default(autoincrement())
+  teste_data_id    Int
+  time             DateTime
+  phase            String
+  marker           String
+  vo2              Float
+  vo2_kg           Float
+  vo2_hr           Int
+  hr               Int
+  wr               Int
+  ve_vo2           Float
+  ve_vco2          Float
+  rer              Float
+  ve               Float
+  vt               Float
+  bf               Int
+  cho_oxyd         Float
+  fat_oxyd         Float
+  tmb              Float
+  vo2_v            Float
+  teste_data       teste_data @relation(fields: [teste_data_id], references: [id_test_data])
+}
