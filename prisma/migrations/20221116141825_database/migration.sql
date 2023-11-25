@@ -81,59 +81,27 @@ CREATE TABLE IF NOT EXISTS ADA.teste_data (
     REFERENCES ADA.patient (id_patient)
 );
 
--- Create table ADA.teste
-CREATE TABLE IF NOT EXISTS ADA.teste (
-  id_teste SERIAL PRIMARY KEY,
-  teste_data_id INT NOT NULL,
-  variable VARCHAR(15),
-  unit VARCHAR(15),
+CREATE TABLE ADA.sumary (
+  id_sumary SERIAL PRIMARY KEY,
   rest VARCHAR(45),
-  unloaded_pedalling DECIMAL(3,2),
-  warm_up INTERVAL,
+  unload_pedaly DECIMAL(3,2),
+  warm_up TIME,
   vt1 DECIMAL(3,2),
-  vt1_perc_norm INT,
+  vt1_perc_normal INT,
   vt1_perc_max INT,
-  vt2 DECIMAL(3,2),
-  vt2_per_norm INT,
+  vt2 DECIMAL(4,2),
+  vt2_perc_normal INT,
   vt2_perc_max INT,
   vo2peak DECIMAL(3,2),
-  vo2peak_perc_norm INT,
-  normal DECIMAL(3,2),
-  absolute_maximum_values DECIMAL(3,2),
-  CONSTRAINT fk_teste_teste_data
-    FOREIGN KEY (teste_data_id)
-    REFERENCES ADA.teste_data (id_test_data)
-);
-
--- Create table ADA.measurement
-CREATE TABLE IF NOT EXISTS ADA.measurement (
-  id_measurement SERIAL PRIMARY KEY,
-  teste_data_id INT NOT NULL,
-  time INTERVAL,
-  phase VARCHAR(45),
-  marker VARCHAR(45),
-  vo2 DECIMAL(3,2),
-  vo2_kg DECIMAL(3,2),
-  vo2_hr INT,
-  hr INT,
-  wr INT,
-  ve_vo2 DECIMAL(3,2),
-  ve_vco2 DECIMAL(3,2),
-  rer DECIMAL(3,2),
-  ve DECIMAL(3,2),
-  vt DECIMAL(3,2),
-  bf INT,
-  cho_oxyd DECIMAL(3,2),
-  fat_oxyd DECIMAL(3,2),
-  tmb DECIMAL(6,2),
-  vo2_v DECIMAL(3,2),
-  CONSTRAINT fk_measurement_teste_data
-    FOREIGN KEY (teste_data_id)
-    REFERENCES ADA.teste_data (id_test_data)
-);
-
--- Create table ADA.timestamps
-CREATE TABLE IF NOT EXISTS ADA.timestamps (
-  create_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMPTZ
+  vo2peak_perc_max INT,
+  "Normal" DECIMAL(3,2),
+  absolute_maximus_values DECIMAL(3,2),
+  id_variable INT NOT NULL,
+  id_patient INT NOT NULL,
+  CONSTRAINT fk_id_patient
+    FOREIGN KEY (id_patient)
+    REFERENCES ADA.patient (id_patient),
+  CONSTRAINT fk_id_variable
+    FOREIGN KEY (id_variable)
+    REFERENCES ADA.variable (id_variable)
 );

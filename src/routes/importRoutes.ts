@@ -1,10 +1,9 @@
 import { Router } from "express";
 import { CreateBiologicalService } from "../services/createBiologicalService";
-import { CreateMeasurementService } from "../services/createMeasurementService";
 import { CreateNormalValueService } from "../services/createNormalValuesService";
 import { CreateTesteDataService } from "../services/createTesteDataService";
 import { CreatePatientService } from "../services/createPatientService";
-import { CreateTesteService } from "../services/createTesteService";
+
 
 const ImportRouter = Router();
 
@@ -53,48 +52,13 @@ ImportRouter.post('/create', async (request, response) =>{
        Temperature,
        Barometric,
        Humidity,
-       t,
-       Phase,
-       Marker,
-       VO2,
-       VO2Kg,
-       VO2HR,
-       HR,
-       WR,
-       VEVO2,
-       VEVCO2,
-       RER,
-       VE,
-       VT,
-       BF,
-       CHOOxyd,
-       FatOxyd,
-       TMB,
-       VO2v,
-       teste_data_id,
-       Variable,
-       Unit,
-       Rest,
-       UnloadedPedalling,
-       WarmUp,
-       VT1,
-       VT1PercNorm,
-       VT1PercMax,
-       VT2,
-       VT2PercNorm,
-       VT2PercMax,
-       VO2Peak,
-       VO2PeakPercNorm,
-       Normal,
-       AbsoluteMaximumValues
+
     } = request.body;
     
     const createpatientservice = new CreatePatientService();
     const createbiologicalservice = new CreateBiologicalService();
     const createnormalvaluesservice = new CreateNormalValueService();
     const createtestedataservice = new CreateTesteDataService();
-    const createmeasurementservice = new CreateMeasurementService();
-    const createtesteservice = new CreateTesteService();
 
     try {
         const patient = await createpatientservice.execute({
@@ -152,47 +116,6 @@ ImportRouter.post('/create', async (request, response) =>{
             temperature:         Temperature,
             barometric_pressure: Barometric,
             humidity:            Humidity,
-        })
-
-        const measurement = await createmeasurementservice.execute({
-            teste_data_id,
-            time:             t,
-            phase:            Phase,
-            marker:           Marker,
-            vo2:              VO2,
-            vo2_kg:           VO2Kg,
-            vo2_hr:           VO2HR,
-            hr:               HR,
-            wr:               WR,
-            ve_vo2:           VEVO2,
-            ve_vco2:          VEVCO2,
-            rer:              RER,
-            ve:               VE,
-            vt:               VT,
-            bf:               BF,
-            cho_oxyd:         CHOOxyd,
-            fat_oxyd:         FatOxyd,
-            tmb:              TMB,
-            vo2_v:            VO2v
-        })
-
-        const teste = await createtesteservice.execute({
-            teste_data_id,
-            variable:                Variable,
-            unit:                    Unit,
-            rest:                    Rest,
-            unloaded_pedalling:      UnloadedPedalling,
-            warm_up:                 WarmUp,
-            vt1:                     VT1,
-            vt1_perc_norm:           VT1PercNorm,
-            vt1_perc_max:            VT1PercMax,
-            vt2:                     VT2,
-            vt2_per_norm:            VT2PercNorm,
-            vt2_perc_max:            VT2PercMax,
-            vo2peak:                 VO2Peak,
-            vo2peak_perc_norm:       VO2PeakPercNorm,
-            normal:                  Normal,
-            absolute_maximum_values: AbsoluteMaximumValues
         })
 
         return response.status(200).json(patient, biological, normalvalues, testedata, measurement, teste)
